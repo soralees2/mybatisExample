@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Example">
+	<select id="selectAll" resultType="com.nuri.vo.ExamVO">
+		select * from example_tbl
+	</select>
+
+	<insert id="insert">
+		insert into example_tbl values(#{title}, #{contents})
+	</insert>
+
+	<delete id="delete">
+		delete from example_tbl where title = #{title}
+	</delete>
+
+	<update id="update">
+		update example_tbl set title = #{title}, contents = #{contents} where title = #{ori_title}
+	</update>
+
+</mapper>

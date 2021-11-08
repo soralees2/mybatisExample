@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="username" value="root" />
+		<property name="password" value="dlthfk119!" />
+		<property name="url" value="jdbc:mariadb://localhost:3306/example" />
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+	</bean> -->
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="username" value="kh" />
+		<property name="password" value="kh" />
+		<property name="url"
+			value="jdbc:oracle:thin:@localhost:49161:xe" />
+		<property name="driverClassName"
+			value="oracle.jdbc.OracleDriver" />
+		<property name="initialSize" value="30" />
+	</bean>
+	
+	<!-- 마이바티스를 사용하기 위해서는 아래 두개를 빈으로 등록 해줘야함 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath:mappers/*-mapper.xml"></property>
+	</bean>
+	<!-- bean등록을 해주면 내부적으로 SqlSessionFactory를 생성해줌 -->
+	<!-- db에 접속할 수 있도록, 접속해서 커넥션을 리턴해주는 dataSource 설정  -->
+	<!-- 여기에 myBatis 설정정보를 담은 xml도 추가해주면된다 -->
+	<!-- sql문을 포함하고있는 mapping xml파일들을 설정해준다. -->
+	<!-- 이렇게 되면 SqlSessionFactoryBean이 sqlSessionFactory을 생성해준다.-->
+	<!-- 생성된 sqlSessionFactory을 SqlSessionTemplate에 생성자로 전달해주면 SqlSessionTemplate이 만들어진다. -->
+	<!-- SqlSessionTemplate이 생성되면 개발자가 작성한 dao클래스에서 사용한다. -->
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	<!-- SqlSessionFactory를 SqlSessionTemplate의 생성자에게 전달 -->
+	<!-- SqlSessionTemplate은 기존에 MyBatis에서 제공해주는 sqlSession 인터페이스를 구현한 클래스
+		Thread safe하기 때문에 멀티스레드 환경에서도 안전하게 사용 가능하다. -->
+	
+</beans>
